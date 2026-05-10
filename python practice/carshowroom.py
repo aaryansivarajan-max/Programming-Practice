@@ -1,5 +1,14 @@
+import os
+
 # Constants
 DATABASE_FILE = "CarShowroomDatabase.txt"
+
+
+# Create database file if it doesn't exist
+if not os.path.exists(DATABASE_FILE):
+    open(DATABASE_FILE, "w").close()
+
+
 
 
 # Function to add a car
