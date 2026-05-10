@@ -1,0 +1,13 @@
+# cjunk
+2DSIM.exe
+*.exe
+*.o
+
+
+#pythonjunk
+__pycache__/
+*.py[cod]
+
+#IDE settings
+.vscode
+.DS_store
