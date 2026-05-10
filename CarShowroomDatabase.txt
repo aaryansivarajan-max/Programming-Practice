@@ -1,0 +1,2 @@
+xiaomi,su7,2026,300000 Y
+tata,punch.ev,2024,3000000 rs
