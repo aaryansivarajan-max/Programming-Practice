@@ -39,7 +39,7 @@ double max_range(struct initial rocket){
 }
 
 int main() {
-    struct initial rocket ={50.0,45.0,0.0,2.0};
+    struct initial rocket ={50.0,45.0,0.0,2.0,5.0};
     printf("PROJECTILE MOTION SIMULATION\n");
     printf("TIME(SECONDS) | X POS(METRE) | Y POS(METRE)\n");
     printf("---------------------------------------------\n");
