@@ -51,7 +51,7 @@ int main() {
     }
 
     printf("\n---Ballistics Report---\n");
-    printf("Max Altitude : %.2f\n",max_height);
-    printf("Impact Range : %.2f\n",max_range);
+    printf("Max Altitude : %.2f\n",max_height(rocket));
+    printf("Impact Range : %.2f\n",max_range(rocket));
         return 0;
 }
