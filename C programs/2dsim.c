@@ -3,55 +3,71 @@
 
 const double g=9.8; //defined gravity
 const double pi=3.14159265; // defined pi
-struct initial {
-    double Vi; //initial velocity
-    double anglei; //initial angle
-    double t; //t=time
-    double Xi;
-    double Yi;
+
+struct projectile {
+    double x;   //  position of projectile in x and y axis
+    double y;
+
+    double v; //initial velocity
+    double vx;  //velocity in 2d components
+    double vy;
+
+    double ax;  // acceleration in two components in x and y axis
+    double ay;
+
+
+    double anglei;
+
+    double mass;  // fixed mass property
+
+    double drag_coefficient;  // drag coefficiant
 };
-double calc_x(struct  initial init,double t){
-    double theta_rad = init.anglei * (pi/180.0);
-    double x = init.Xi+(init.Vi *cos(theta_rad) *  t);
-    return x;
 
-}
-double calc_y(struct initial init, double t){
-    double theta_rad=init.anglei *(pi / 180.0); // converted angle into  radians since c math libs uses radians
-    double Vy =init.Vi * sin(theta_rad); // since dy=vy*t-0.5*g*t*t
-    double y =init.Yi + (Vy*t)-0.5 * g * t * t;
-    return y;
-}
+double accel_mag(struct projectile rocket) { 
+     double a_mag =sqrt( rocket.ax * rocket.ax +rocket.ay * rocket.ay) ;
+     return a_mag ;
+};
+double force(struct projectile rocket,double a_mag){
+    double F_mag = rocket.mass * a_mag;
+    return F_mag ;
+};
 
-double max_height(struct initial rocket){
-    double theta_rad = rocket.anglei * (pi / 180);
-    double Vy_i = rocket.Vi * sin(theta_rad);
-    return rocket.Yi + (pow(Vy_i,2) / (2 * g));
-
-}
-double max_range(struct initial rocket){
-    double theta_rad=rocket.anglei * (pi / 180);
-    double Vx = rocket.Vi * cos(theta_rad);
-    double Vy = rocket.Vi * sin(theta_rad);
-    double discriminant = sqrt(pow(Vy,2) + (2 * g * rocket.Yi));
-    return rocket.Xi + (Vx / g) * (Vy + discriminant);
-
-}
+double speed(struct projectile rocket){
+    double v_mag= sqrt(rocket.vx * rocket.vx + rocket.vy *rocket.vy );
+    return v_mag;
+};
 
 int main() {
-    struct initial rocket ={50.0,45.0,0.0,2.0,5.0};
-    printf("PROJECTILE MOTION SIMULATION\n");
-    printf("TIME(SECONDS) | X POS(METRE) | Y POS(METRE)\n");
-    printf("---------------------------------------------\n");
-    for (double t=0; t <= 10.0;t += 0.5){
-        double x =calc_x(rocket,t);
-        double y=calc_y(rocket,t);
-        if (y < 0)break;
-        printf("%7.1f  |  %8.2f  | %8.2f\n",t,x,y);
-    }
+    double dt= 0.01 ;
+    double t=0;
+    struct projectile rocket ;
+    printf("enter your initial position in x \n");
+    scanf("%lf",   &rocket.x  );
+    printf("enter your initial position in y \n");
+    scanf("%lf",   &rocket.y  );
+    printf("enter your initial velocity\n");
+    scanf("%lf",   &rocket.v );
+    printf("Enter launch angle in degrees:\n");
+    scanf("%lf", &rocket.anglei);
+    double theta_rad = rocket.anglei * (pi / 180.0);
+    rocket.vx = rocket.v * cos(theta_rad);
+    rocket.vy = rocket.v * sin(theta_rad);
+    rocket.ax = 0;
+    rocket.ay = -g;
+    printf("vx = %lf\n", rocket.vx);
+    printf("vy = %lf\n", rocket.vy);
 
-    printf("\n---Ballistics Report---\n");
-    printf("Max Altitude : %.2f\n",max_height(rocket));
-    printf("Impact Range : %.2f\n",max_range(rocket));
-        return 0;
+
+    while (rocket.y >= 0) {
+        rocket.vx = rocket.vx + rocket.ax * dt ;
+        rocket.vy = rocket.vy + rocket.ay * dt ;
+        rocket.x = rocket.x + rocket.vx * dt ;
+        rocket.y = rocket.y + rocket.vy * dt ;
+        t = t + dt ;
+        printf("TIME     | X POS     | Y POS     | VX        | VY\n      |");
+        printf("t=%.2lf  | x=%.2lf   | y=%.2lf   |vx=%.2lf   | vy=%.2lf  |\n",  t, rocket.x, rocket.y, rocket.vx, rocket.vy);
+
+    }
+    
+    
 }
